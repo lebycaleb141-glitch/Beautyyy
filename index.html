@@ -52,12 +52,57 @@
     align-items: center;
     height: 72px;
   }
+
+  /* ===== LOGO WITH BOUNCE ===== */
   .logo {
     font-family: 'Playfair Display', serif;
     font-size: 26px;
     font-weight: 700;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    animation: logoBounceIn 1.1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+               logoFloat 3.2s ease-in-out 1.1s infinite;
+    transition: transform 0.3s ease, filter 0.3s ease;
   }
-  .logo span { color: var(--accent); }
+  .logo:hover {
+    transform: translateY(-3px) scale(1.03);
+    filter: drop-shadow(0 0 12px rgba(201, 162, 39, 0.55));
+  }
+  .logo span {
+    color: var(--accent);
+    position: relative;
+    display: inline-block;
+    animation: glamShimmer 2.8s ease-in-out infinite;
+  }
+  .logo .sparkle {
+    font-size: 18px;
+    display: inline-block;
+    animation: sparkleBounce 1.8s ease-in-out infinite;
+    filter: drop-shadow(0 0 6px rgba(201, 162, 39, 0.8));
+  }
+
+  @keyframes logoBounceIn {
+    0%   { opacity: 0; transform: translateY(-40px) scale(0.7); }
+    55%  { opacity: 1; transform: translateY(8px) scale(1.05); }
+    75%  { transform: translateY(-4px) scale(0.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes logoFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-5px); }
+  }
+  @keyframes glamShimmer {
+    0%, 100% { text-shadow: 0 0 0 transparent; }
+    50%      { text-shadow: 0 0 14px rgba(201, 162, 39, 0.85), 0 0 28px rgba(201, 162, 39, 0.35); }
+  }
+  @keyframes sparkleBounce {
+    0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
+    40%      { transform: translateY(-7px) scale(1.25) rotate(12deg); }
+    70%      { transform: translateY(-2px) scale(1.1) rotate(-6deg); }
+  }
+
   nav {
     display: flex;
     gap: 28px;
@@ -103,11 +148,25 @@
     position: relative;
     overflow: hidden;
   }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 70%;
+    background: radial-gradient(ellipse, rgba(201, 162, 39, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
   .hero-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 60px;
     align-items: center;
+    position: relative;
+    z-index: 2;
   }
   .hero h1 {
     font-size: clamp(42px, 5.5vw, 68px);
@@ -126,28 +185,134 @@
     gap: 16px;
     flex-wrap: wrap;
   }
+
+  /* ===== HERO IMAGE - Professional & Attractive ===== */
   .hero-image {
     position: relative;
     height: 480px;
-    border-radius: 20px;
+    border-radius: 24px;
     overflow: hidden;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+    box-shadow: 
+      0 25px 50px rgba(0, 0, 0, 0.45),
+      0 0 0 1px rgba(201, 162, 39, 0.25),
+      0 0 40px rgba(201, 162, 39, 0.12);
+    background: #1a0f14;
+    animation: imageEntrance 1.3s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+  }
+  .hero-image:hover {
+    transform: translateY(-6px);
+    box-shadow: 
+      0 32px 60px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(201, 162, 39, 0.4),
+      0 0 50px rgba(201, 162, 39, 0.18);
   }
   .hero-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s ease;
+    filter: brightness(0.97) contrast(1.05);
+  }
+  .hero-image:hover img {
+    transform: scale(1.04);
+    filter: brightness(1.03) contrast(1.08);
+  }
+  .hero-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(26, 15, 20, 0.15) 0%,
+      transparent 30%,
+      transparent 60%,
+      rgba(26, 15, 20, 0.45) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+  .hero-image::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border: 1px solid rgba(201, 162, 39, 0.35);
+    border-radius: 16px;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.7;
+    transition: opacity 0.4s ease;
+  }
+  .hero-image:hover::before {
+    opacity: 1;
   }
   .hero-badge {
     position: absolute;
-    bottom: 24px;
-    left: 24px;
-    background: rgba(26,15,20,0.85);
+    bottom: 22px;
+    left: 22px;
+    background: rgba(26, 15, 20, 0.88);
+    backdrop-filter: blur(8px);
     color: var(--accent);
-    padding: 12px 20px;
-    border-radius: 12px;
-    font-size: 14px;
+    padding: 11px 18px;
+    border-radius: 50px;
+    font-size: 13px;
     font-weight: 600;
+    letter-spacing: 0.3px;
+    z-index: 3;
+    border: 1px solid rgba(201, 162, 39, 0.35);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .hero-badge::before {
+    content: '★';
+    font-size: 12px;
+    color: var(--accent);
+  }
+  @keyframes imageEntrance {
+    0% {
+      opacity: 0;
+      transform: translateY(30px) scale(0.96);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* Floating emojis */
+  .floating-emojis {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .emoji {
+    position: absolute;
+    font-size: 22px;
+    opacity: 0.55;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+    will-change: transform;
+  }
+  .emoji.left-to-right {
+    animation: floatLTR linear infinite;
+  }
+  .emoji.right-to-left {
+    animation: floatRTL linear infinite;
+  }
+  @keyframes floatLTR {
+    0%   { transform: translateX(-80px) translateY(0) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.6; }
+    90%  { opacity: 0.6; }
+    100% { transform: translateX(calc(100vw + 80px)) translateY(-40px) rotate(20deg); opacity: 0; }
+  }
+  @keyframes floatRTL {
+    0%   { transform: translateX(calc(100vw + 80px)) translateY(0) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.55; }
+    90%  { opacity: 0.55; }
+    100% { transform: translateX(-80px) translateY(30px) rotate(-15deg); opacity: 0; }
   }
 
   /* ===== SECTIONS ===== */
@@ -334,7 +499,6 @@
     font-size: 14px;
   }
 
-  /* Review form */
   .review-form {
     max-width: 500px;
     margin: 0 auto;
@@ -516,6 +680,8 @@
     .reviews-grid { grid-template-columns: 1fr; }
     nav a:not(.btn) { display: none; }
     .form-row { grid-template-columns: 1fr; }
+    .emoji { font-size: 18px; }
+    .logo { font-size: 22px; }
   }
 </style>
 </head>
@@ -524,7 +690,10 @@
 <!-- ========== HEADER ========== -->
 <header>
   <div class="container header-inner">
-    <a href="#" class="logo"> Laurashia <span> Glam </span> Studio</a>
+    <a href="#" class="logo">
+      Laurashia <span>Glam</span> Studio
+      <span class="sparkle">✨</span>
+    </a>
     <nav>
       <a href="#services">Services</a>
       <a href="#gallery">Gallery</a>
@@ -537,6 +706,8 @@
 
 <!-- ========== HERO ========== -->
 <section class="hero">
+  <div class="floating-emojis" id="floatingEmojis"></div>
+
   <div class="container hero-grid">
     <div>
       <h1>Where beauty<br>meets <span>elegance</span></h1>
@@ -547,8 +718,7 @@
       </div>
     </div>
     <div class="hero-image">
-      <!-- REPLACE THIS IMAGE: put your best salon photo here -->
-      <img src="Laurashia Glam Studio Gold Emblem.png" alt="Beautiful hair styling">
+      <img src="Laurashia Glam Studio Gold Emblem.png" alt="Beautiful hair styling at Laurashia Glam Studio">
       <div class="hero-badge">8+ Years of Excellence</div>
     </div>
   </div>
@@ -561,9 +731,7 @@
       <h2>Our Services</h2>
       <p>Quality treatments with clear pricing. Final price is confirmed before we start.</p>
     </div>
-    <div class="services-grid" id="services-list">
-      <!-- Services will be loaded here by JavaScript -->
-    </div>
+    <div class="services-grid" id="services-list"></div>
   </div>
 </section>
 
@@ -575,7 +743,6 @@
       <p>Real results from real clients.</p>
     </div>
     <div class="gallery-grid">
-      <!-- REPLACE ALL THESE IMAGES with your real work photos -->
       <div class="gallery-item">
         <img src="knotless.jpeg" alt="Knotless braids">
         <div class="label">Knotless Braids</div>
@@ -616,13 +783,12 @@
 <section id="about">
   <div class="container about-grid">
     <div class="about-img">
-      <!-- REPLACE THIS IMAGE with a photo of your salon or team -->
       <img src="knotless.jpeg" alt="Our studio">
     </div>
     <div class="about-content">
       <h2>A calm space for beautiful results</h2>
       <p>We are a professional hair and beauty studio focused on quality, hygiene and personal care. Every client receives a proper consultation so we can deliver exactly what you want.</p>
-      <p>Whether you need protective styles, colour, bridal makeup or a full glam look, our experienced team is ready for you.</p>
+      <p>Whether you need protective styles, color, bridal makeup or a full glam look, our experienced team is ready for you.</p>
       <div class="features">
         <div class="feature">
           <div class="feature-icon">1</div>
@@ -657,9 +823,7 @@
       <h2>Client Reviews</h2>
       <p>What our clients say about us</p>
     </div>
-    <div class="reviews-grid" id="reviews-list">
-      <!-- Reviews loaded by JavaScript -->
-    </div>
+    <div class="reviews-grid" id="reviews-list"></div>
 
     <div class="review-form">
       <h3>Leave a Review</h3>
@@ -727,7 +891,7 @@
     </div>
     <div>
       WhatsApp: <a id="phoneLink" href="#"></a><br>
-      <a href="#" id="adminLogin">Laurashia</a>
+      <a href="#" id="adminLogin">Nimoh</a>
     </div>
   </div>
 </footer>
@@ -779,7 +943,7 @@
   </div>
 </div>
 
-<!-- ========== DATA (edit prices & reviews here) ========== -->
+<!-- ========== DATA ========== -->
 <script type="application/json" id="siteData">
 {
   "whatsapp": "254114980301",
@@ -850,7 +1014,6 @@
 </script>
 
 <script>
-  // ========== LOAD DATA ==========
   let data = JSON.parse(document.getElementById('siteData').textContent);
   try {
     const saved = localStorage.getItem('luxe_data');
@@ -861,7 +1024,26 @@
     localStorage.setItem('luxe_data', JSON.stringify(data));
   }
 
-  // ========== RENDER SERVICES ==========
+  // Floating emojis
+  (function createFloatingEmojis() {
+    const container = document.getElementById('floatingEmojis');
+    const emojis = ['✨', '💄', '💅', '💇‍♀️', '🌸', '💋', '🪞', '🎀', '💫', '👑', '💖', '🌟'];
+    const count = 16;
+
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('div');
+      el.className = 'emoji ' + (i % 2 === 0 ? 'left-to-right' : 'right-to-left');
+      el.textContent = emojis[i % emojis.length];
+      el.style.top = (6 + Math.random() * 78) + '%';
+      const duration = 16 + Math.random() * 24;
+      const delay = -Math.random() * duration;
+      el.style.animationDuration = duration + 's';
+      el.style.animationDelay = delay + 's';
+      el.style.fontSize = (17 + Math.random() * 12) + 'px';
+      container.appendChild(el);
+    }
+  })();
+
   function renderServices() {
     const container = document.getElementById('services-list');
     container.innerHTML = data.categories.map(cat => `
@@ -882,7 +1064,6 @@
     `).join('');
   }
 
-  // ========== RENDER REVIEWS ==========
   function renderReviews() {
     document.getElementById('reviews-list').innerHTML = data.reviews.map(r => `
       <div class="review-card">
@@ -892,7 +1073,6 @@
     `).join('');
   }
 
-  // ========== RENDER SERVICE DROPDOWN ==========
   function renderServiceSelect() {
     const select = document.getElementById('service');
     select.innerHTML = data.categories.map(cat => `
@@ -902,7 +1082,6 @@
     `).join('');
   }
 
-  // ========== UPDATE PHONE ==========
   function updatePhone() {
     const num = data.whatsapp.replace(/\D/g, '');
     document.getElementById('phoneLink').href = `tel:+${num}`;
@@ -914,14 +1093,12 @@
     window.open(`https://wa.me/${num}?text=${encodeURIComponent(message)}`, '_blank');
   }
 
-  // ========== INITIAL RENDER ==========
   renderServices();
   renderReviews();
   renderServiceSelect();
   updatePhone();
   document.getElementById('date').min = new Date().toISOString().split('T')[0];
 
-  // ========== BOOKING FORM ==========
   document.getElementById('bookingForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const name = document.getElementById('name').value.trim();
@@ -943,7 +1120,6 @@
     openWhatsApp(msg);
   });
 
-  // ========== REVIEW FORM ==========
   document.getElementById('reviewForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const name = document.getElementById('reviewName').value.trim();
@@ -952,7 +1128,6 @@
     this.reset();
   });
 
-  // ========== ADMIN ==========
   const adminPanel = document.getElementById('admin');
 
   document.getElementById('adminLogin').addEventListener('click', function(e) {
@@ -969,7 +1144,6 @@
     adminPanel.classList.remove('open');
   });
 
-  // Tabs
   document.querySelectorAll('.admin-tabs button[data-tab]').forEach(btn => {
     btn.addEventListener('click', function() {
       document.querySelectorAll('.admin-tabs button').forEach(b => b.classList.remove('active'));
@@ -980,11 +1154,8 @@
   });
 
   function openAdmin() {
-    // Fill settings
     document.getElementById('adminWhatsapp').value = data.whatsapp;
     document.getElementById('adminPassword').value = data.password;
-
-    // Render prices
     renderAdminPrices();
     renderAdminReviews();
     adminPanel.classList.add('open');
@@ -996,7 +1167,7 @@
       <div class="admin-item">
         <input value="${cat.name}" onchange="updateCatName(${ci}, this.value)" placeholder="Category name">
         <input value="${cat.description}" onchange="updateCatDesc(${ci}, this.value)" placeholder="Description">
-        <input value="${cat.image}" onchange="updateCatImage(${ci}, this.value)" placeholder="Image path (e.g. images/service-hair.jpg)">
+        <input value="${cat.image}" onchange="updateCatImage(${ci}, this.value)" placeholder="Image path">
         ${cat.items.map((item, ii) => `
           <div style="display:flex;gap:8px;margin-top:8px">
             <input value="${item.name}" onchange="updateItemName(${ci},${ii},this.value)" style="flex:1">
@@ -1020,7 +1191,6 @@
     `).join('');
   }
 
-  // Admin helper functions
   window.updateCatName = (i, val) => { data.categories[i].name = val; saveData(); renderServices(); renderServiceSelect(); };
   window.updateCatDesc = (i, val) => { data.categories[i].description = val; saveData(); renderServices(); };
   window.updateCatImage = (i, val) => { data.categories[i].image = val; saveData(); renderServices(); };
@@ -1078,10 +1248,8 @@
   });
 
   document.getElementById('downloadSite').addEventListener('click', () => {
-    // Update the JSON in the page
     const clone = document.documentElement.cloneNode(true);
     clone.querySelector('#siteData').textContent = JSON.stringify(data, null, 2);
-    // Clear dynamic content
     clone.querySelector('#services-list').innerHTML = '';
     clone.querySelector('#reviews-list').innerHTML = '';
     clone.querySelector('#service').innerHTML = '';
